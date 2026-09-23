@@ -1,8 +1,10 @@
 import { Router } from "express";
-import { list, get, create } from "../controllers/productController.js";
+import { list, get, create, update, remove, } from "../controllers/productController.js";
 import { protect, authorize } from "../middleware/auth.js";
 const router = Router();
 router.get("/", list);
 router.get("/:id", get);
 router.post("/", protect, authorize("admin"), create);
+router.put("/:id", protect, authorize("admin"), update);
+router.delete("/:id", protect, authorize("admin"), remove);
 export default router;

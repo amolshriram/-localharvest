@@ -37,3 +37,46 @@ export async function create(req, res, next) {
     next(e);
   }
 }
+
+export async function update(req, res, next) {
+  try {
+    const product = await Product.findByIdAndUpdate(req.params.id, req.body, {
+      new: true,
+      runValidators: true,
+    });
+
+    if (!product) {
+      return res.status(404).json({
+        success: false,
+        message: "Product not found",
+      });
+    }
+
+    res.json({
+      success: true,
+      product,
+    });
+  } catch (e) {
+    next(e);
+  }
+}
+
+export async function remove(req, res, next) {
+  try {
+    const product = await Product.findByIdAndDelete(req.params.id);
+
+    if (!product) {
+      return res.status(404).json({
+        success: false,
+        message: "Product not found",
+      });
+    }
+
+    res.json({
+      success: true,
+      message: "Product deleted successfully",
+    });
+  } catch (e) {
+    next(e);
+  }
+}
