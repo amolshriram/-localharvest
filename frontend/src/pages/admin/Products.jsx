@@ -224,57 +224,77 @@ export default function Products() {
                 {message && <p>{message}</p>}
             </form>
 
-            <div style={{ marginTop: "40px" }}>
-                <h2>Products</h2>
+            <div className="admin-products-list">
+                <div className="admin-products-heading">
+                    <div>
+                        <span className="eyebrow">Inventory</span>
+                        <h2>Products</h2>
+                    </div>
+
+                    <span className="product-count">
+                        {products.length} products
+                    </span>
+                </div>
 
                 {loading ? (
-                    <p>Loading products...</p>
+                    <div className="empty-state">
+                        <p>Loading products...</p>
+                    </div>
                 ) : products.length === 0 ? (
-                    <p>No products found.</p>
+                    <div className="empty-state">
+                        <div className="empty-emoji">🥬</div>
+                        <h2>No products found</h2>
+                        <p>Add your first fruit or vegetable above.</p>
+                    </div>
                 ) : (
-                    <div>
+                    <div className="admin-product-grid">
                         {products.map((product) => (
-                            <div
+                            <article
+                                className="admin-product-card"
                                 key={product._id}
-                                style={{
-                                    border: "1px solid #ddd",
-                                    padding: "15px",
-                                    marginBottom: "10px",
-                                    borderRadius: "8px",
-                                }}
                             >
-                                <div>
-                                    <strong>
-                                        {product.emoji} {product.name}
-                                    </strong>
+                                <div className="admin-product-art">
+                                    {product.emoji || "🥕"}
                                 </div>
 
-                                <p>
-                                    {product.category} · ₹
-                                    {product.estimatedPrice} / {product.unit}
-                                </p>
+                                <div className="admin-product-content">
+                                    <span className="eyebrow">
+                                        {product.category}
+                                    </span>
 
-                                <p>
-                                    {product.description}
-                                </p>
+                                    <h3>{product.name}</h3>
 
-                                <button
-                                    type="button"
-                                    onClick={() => handleEdit(product)}
-                                >
-                                    Edit
-                                </button>
+                                    <div className="admin-product-price">
+                                        ₹{product.estimatedPrice}
+                                        <span> / {product.unit}</span>
+                                    </div>
 
-                                <button
-                                    type="button"
-                                    onClick={() =>
-                                        handleDelete(product._id)
-                                    }
-                                    style={{ marginLeft: "10px" }}
-                                >
-                                    Delete
-                                </button>
-                            </div>
+                                    <p>
+                                        {product.description ||
+                                            "Fresh produce sourced from a nearby market."}
+                                    </p>
+
+                                    <div className="admin-product-actions">
+                                        <button
+                                            type="button"
+                                            className="admin-edit-button"
+                                            onClick={() => handleEdit(product)}
+                                        >
+                                            Edit
+                                        </button>
+
+                                        <button
+                                            type="button"
+                                            className="admin-delete-button"
+                                            onClick={() =>
+                                                handleDelete(product._id)
+                                            }
+                                        >
+                                            Delete
+                                        </button>
+                                    </div>
+                                </div>
+                            </article>
                         ))}
                     </div>
                 )}

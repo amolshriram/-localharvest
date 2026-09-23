@@ -71,3 +71,91 @@ export async function markets(req, res, next) {
     next(e);
   }
 }
+
+export async function deliveryPartners(req, res, next) {
+  try {
+    const partners = await User.find({
+      role: "delivery_partner",
+      active: true,
+    })
+      .select("_id name email phone")
+      .sort({ name: 1 });
+
+    res.json({
+      success: true,
+      partners,
+    });
+  } catch (e) {
+    next(e);
+  }
+}
+
+export async function assignDeliveryPartner(req, res, next) {
+  try {
+    const { deliveryPartnerId } = req.body;
+
+    if (!deliveryPartnerId) {
+      return res.status(400).json({
+        success: false,
+        message: "Delivery partner is required",
+      });
+    }
+
+    const partner = await User.findOne({
+      _id: deliveryPartnerId,
+      role: "delivery_partner",
+      active: true,
+    });
+
+    if (!partner) {
+      return res.status(404).json({
+        success: false,
+        message: "Active delivery partner not found",
+      });
+    }
+
+    const order = await Order.findById(req.params.id);
+
+    if (!order) {
+      return res.status(404).json({
+        success: false,
+        message: "Order not found",
+      });
+    }
+
+    if (order.status !== "READY_FOR_PICKUP") {
+      return res.status(400).json({
+        success: false,
+        message:
+          "Delivery partner can only be assigned when the order is ready for pickup",
+      });
+    }
+
+    order.deliveryPartnerId = partner._id;
+    order.status = "DELIVERY_ASSIGNED";
+
+    order.statusHistory.push({
+      status: "DELIVERY_ASSIGNED",
+      updatedBy: req.user._id,
+      note: `Delivery partner assigned: ${partner.name}`,
+    });
+
+    await order.save();
+
+    await order.populate([
+      "customerId",
+      "marketId",
+      "buyerId",
+      "packingPointId",
+      "deliveryPartnerId",
+    ]);
+
+    res.json({
+      success: true,
+      message: "Delivery partner assigned successfully",
+      order,
+    });
+  } catch (e) {
+    next(e);
+  }
+}
