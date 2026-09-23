@@ -1,0 +1,2 @@
+import { Link } from 'react-router-dom'; import StatusBadge from './StatusBadge';
+export default function OrderCard({order}){return <Link to={`/orders/${order._id}`} className="order-card"><div><span className="eyebrow">#{order._id?.slice(-7).toUpperCase()}</span><h3>{order.items?.length||0} items · ₹{order.total}</h3><p>{new Date(order.createdAt).toLocaleDateString('en-IN',{day:'numeric',month:'short',year:'numeric'})}</p></div><StatusBadge status={order.status}/><span className="arrow">→</span></Link>}

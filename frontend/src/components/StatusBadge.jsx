@@ -1,0 +1,2 @@
+const labels={ORDER_PLACED:'Order placed',BUYER_ASSIGNED:'Buyer assigned',SHOPPING_IN_PROGRESS:'Shopping in progress',ITEMS_PURCHASED:'Items purchased',AT_PACKING_POINT:'At packing point',PACKING:'Packing',READY_FOR_PICKUP:'Ready for pickup',DELIVERY_ASSIGNED:'Delivery assigned',PICKED_UP:'Picked up',OUT_FOR_DELIVERY:'Out for delivery',DELIVERED:'Delivered',CANCELLED:'Cancelled'};
+export default function StatusBadge({status}){return <span className={`status status-${status?.toLowerCase()}`}>{labels[status]||status?.replaceAll('_',' ')}</span>}
