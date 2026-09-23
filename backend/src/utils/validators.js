@@ -1,1 +1,2 @@
-export const isValidCoordinates = (latitude, longitude) => Number.isFinite(Number(latitude)) && Number.isFinite(Number(longitude));
+export const isValidCoordinates = (latitude, longitude) =>
+  Number.isFinite(Number(latitude)) && Number.isFinite(Number(longitude));

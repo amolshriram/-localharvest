@@ -1,3 +1,18 @@
-import mongoose from 'mongoose';
-const schema = new mongoose.Schema({ orderId: { type: mongoose.Schema.Types.ObjectId, ref: 'Order', index: true }, buyerId: { type: mongoose.Schema.Types.ObjectId, ref: 'User' }, marketId: { type: mongoose.Schema.Types.ObjectId, ref: 'Market' }, productId: { type: mongoose.Schema.Types.ObjectId, ref: 'Product' }, requestedQuantity: Number, purchasedQuantity: Number, marketPrice: Number, availabilityStatus: { type: String, enum: ['AVAILABLE','PARTIALLY_AVAILABLE','UNAVAILABLE','SUBSTITUTED'] }, substituteProductId: { type: mongoose.Schema.Types.ObjectId, ref: 'Product' }, notes: String, purchasedAt: { type: Date, default: Date.now } });
-export default mongoose.model('PurchaseRecord', schema);
+import mongoose from "mongoose";
+const schema = new mongoose.Schema({
+  orderId: { type: mongoose.Schema.Types.ObjectId, ref: "Order", index: true },
+  buyerId: { type: mongoose.Schema.Types.ObjectId, ref: "User" },
+  marketId: { type: mongoose.Schema.Types.ObjectId, ref: "Market" },
+  productId: { type: mongoose.Schema.Types.ObjectId, ref: "Product" },
+  requestedQuantity: Number,
+  purchasedQuantity: Number,
+  marketPrice: Number,
+  availabilityStatus: {
+    type: String,
+    enum: ["AVAILABLE", "PARTIALLY_AVAILABLE", "UNAVAILABLE", "SUBSTITUTED"],
+  },
+  substituteProductId: { type: mongoose.Schema.Types.ObjectId, ref: "Product" },
+  notes: String,
+  purchasedAt: { type: Date, default: Date.now },
+});
+export default mongoose.model("PurchaseRecord", schema);
